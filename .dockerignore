@@ -1,0 +1,17 @@
+target/
+build/
+.mvn/
+node_modules/
+coverage/
+.git/
+.gitignore
+.dockerignore
+Dockerfile*
+*.log*
+.env*
+*.tmp
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
+
