@@ -31,3 +31,19 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Java build and runtime artifacts
+*.class
+*.jar
+*.war
+*.log
+
+# Environment files
+.env
+.env.*
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.tmp
+
