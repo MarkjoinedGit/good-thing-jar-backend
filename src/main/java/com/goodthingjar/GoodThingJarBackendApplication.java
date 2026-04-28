@@ -10,4 +10,5 @@ public class GoodThingJarBackendApplication {
 		SpringApplication.run(GoodThingJarBackendApplication.class, args);
 	}
 
+
 }
