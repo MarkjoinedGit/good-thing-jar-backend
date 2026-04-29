@@ -10,6 +10,7 @@ import com.goodthingjar.service.UserService;
 import com.goodthingjar.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -30,7 +31,12 @@ class UserServiceTest {
         PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
         JwtTokenProvider tokenProvider = mock(JwtTokenProvider.class);
 
-        UserService userService = new UserServiceImpl(userRepository, passwordEncoder, tokenProvider, 86400);
+        UserService userService = new UserServiceImpl(userRepository, passwordEncoder, tokenProvider);
+        ReflectionTestUtils.setField(
+                userService,
+                "accessTokenExpirySeconds",
+                86400
+        );
         RegisterRequest request = new RegisterRequest("new@example.com", "Strong123!", "New", "User");
 
         when(userRepository.findByEmail("new@example.com")).thenReturn(Optional.empty());
@@ -59,7 +65,12 @@ class UserServiceTest {
         PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
         JwtTokenProvider tokenProvider = mock(JwtTokenProvider.class);
 
-        UserService userService = new UserServiceImpl(userRepository, passwordEncoder, tokenProvider, 86400);
+        UserService userService = new UserServiceImpl(userRepository, passwordEncoder, tokenProvider);
+        ReflectionTestUtils.setField(
+                userService,
+                "accessTokenExpirySeconds",
+                86400
+        );
 
         UUID userId = UUID.fromString("22222222-2222-2222-2222-222222222222");
         User user = User.builder()
@@ -87,7 +98,12 @@ class UserServiceTest {
         PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
         JwtTokenProvider tokenProvider = mock(JwtTokenProvider.class);
 
-        UserService userService = new UserServiceImpl(userRepository, passwordEncoder, tokenProvider, 86400);
+        UserService userService = new UserServiceImpl(userRepository, passwordEncoder, tokenProvider);
+        ReflectionTestUtils.setField(
+                userService,
+                "accessTokenExpirySeconds",
+                86400
+        );
 
         when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.empty());
 

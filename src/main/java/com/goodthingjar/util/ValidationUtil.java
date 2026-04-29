@@ -121,20 +121,22 @@ public final class ValidationUtil {
         }
     }
 
-    public static void validatePairingCode(ClaimPairingCodeRequest request, PairingCodeRepository pairingCodeRepository) {
-        if (!isValidFormat(request.code())) {
-            throw PairingBusinessException.invalidCodeFormat();
+    public static void validateClaimableCode(PairingCode pc, User claimer) {
+
+        // A code may still carry ACTIVE status even after its 24-hour window
+        // has passed if a background job hasn't flipped it yet. Check the
+        // wall clock explicitly so callers always get CODE_EXPIRED_OR_CLAIMED.
+        if (!pc.getStatus().equals(PairingCodeStatus.ACTIVE)
+                || pc.getExpiresAt().isBefore(OffsetDateTime.now())) {
+            throw PairingBusinessException.codeExpiredOrClaimed();
         }
 
-        PairingCode pc = pairingCodeRepository.findByCode(request.code())
-                .orElseThrow(PairingBusinessException::codeNotFound);
-
-        if (!pc.getStatus().equals(PairingCodeStatus.ACTIVE)) {
-            throw PairingBusinessException.codeExpiredOrClaimed();
+        if (claimer.getId().equals(pc.getGeneratedBy().getId())) {
+            throw PairingBusinessException.cannotPairWithSelf();
         }
     }
 
-    private static boolean isValidFormat(String code) {
+    public static boolean isValidFormat(String code) {
         if (code == null) return false;
         String regex = "^[A-Z0-9]{4}(-[A-Z0-9]{4}){2}$";
         return code.matches(regex);

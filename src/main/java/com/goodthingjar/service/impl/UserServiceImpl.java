@@ -13,32 +13,26 @@ import com.goodthingjar.repository.UserRepository;
 import com.goodthingjar.security.JwtTokenProvider;
 import com.goodthingjar.service.UserService;
 import com.goodthingjar.util.ValidationUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
+@Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final long accessTokenExpirySeconds;
 
-    public UserServiceImpl(
-            UserRepository userRepository,
-            PasswordEncoder passwordEncoder,
-            JwtTokenProvider jwtTokenProvider,
-            @Value("${app.security.jwt.access-token-expiry-seconds}") long accessTokenExpirySeconds
-    ) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.accessTokenExpirySeconds = accessTokenExpirySeconds;
-    }
+    @Value("${app.security.jwt.access-token-expiry-seconds}")
+    private long accessTokenExpirySeconds;
 
     @Override
     public AuthResponse register(RegisterRequest request) {

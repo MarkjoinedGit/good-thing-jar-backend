@@ -3,9 +3,11 @@ package com.goodthingjar.service.factory;
 import com.goodthingjar.entity.Couple;
 import com.goodthingjar.entity.Jar;
 import com.goodthingjar.entity.enums.JarStatus;
+import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
 
+@Component
 public class JarFactory {
     public Jar createByCouple(Couple couple) {
         OffsetDateTime defaultUnlocksAt = OffsetDateTime.now()

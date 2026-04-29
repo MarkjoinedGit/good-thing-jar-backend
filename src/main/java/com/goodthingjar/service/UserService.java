@@ -22,7 +22,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-@Service
 public interface UserService {
     AuthResponse register(RegisterRequest request);
     AuthResponse authenticate(LoginRequest request);
