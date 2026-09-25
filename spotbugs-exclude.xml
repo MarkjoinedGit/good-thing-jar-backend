@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Spring owns and lifecycle-manages these injected collaborators. -->
+    <Match>
+        <Or>
+            <Class name="com.goodthingjar.jar.api.EntryController"/>
+            <Class name="com.goodthingjar.notification.application.OutboxDispatcher"/>
+            <Class name="com.goodthingjar.platform.observability.SecurityAuditService"/>
+            <Class name="com.goodthingjar.platform.throttle.AbuseThrottleService"/>
+        </Or>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+    <!-- Mutable accessors are required by Spring Boot's configuration-properties binder. -->
+    <Match>
+        <Class name="com.goodthingjar.platform.throttle.ThrottleProperties"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+</FindBugsFilter>
